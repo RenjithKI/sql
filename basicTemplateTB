@@ -1,24 +1,97 @@
+Sample Quey Questions
+
 --SELECT all RECORDS from table 
 select * from employee
+select * from department
 
-select * from employee
+1) RETURN EMPLOyee RECORD with HIGH3EST SALARY
+--first attempt
+select * from employee where salary = (select Max(salary) from employee);
+--second way
+select * from employee order by salary desc limit 1;
 
-1) select * from employee order by salary desc limit 1;
 
-2) select max(salary) from employee;
+2)RETURN max salary from the emplyee TB
+--
+select max(salary) from employee;
 
-3) select salary from employee order by salary desc limit 1 offset 1;
+2)RETURN second highest salary from the emplyee TB
+--
+select Max(salary) from employee where salary NOT IN (select Max(salary) from employee);
 
-4) select * from employee where employee_id > 2004 and employee_id <= 2006;
+--second trial--
+select salary from employee order by salary desc limit 1 offset 1;
 
-5) select first_name||" "||last_name as name, salary, department.name as department from employee inner join department on employee.department_id = department.department_id;
+4) select a range of records  based on the ID
+select * from employee where employee_id BETWEEN 2003 AND 2006;
+--SECOND TRIAL
+select * from employee where employee_id > 2004 and employee_id <= 2006;
 
-6*) select first_name||" "||last_name as name, max(salary), department.name as department from employee inner join department on employee.department_id = department.department_id group by department.department_id;
+5)Return employee record with highest salary with his department name.....
+select first_name||" "||last_name as name, salary, department.name as department from employee inner join department 
+ on employee.department_id = department.department_id;
 
-/*The solutions in the video are problematic on a number of counts. Solutions for 1, 3 and 6 as provided can all return more results than intended, which can cause problems down the line. I would keep looking for an employee who had a better understanding of what they were doing. That 'where-in-select-max' pattern produces answers that are mostly correct, most of the time, but is ultimately wrong.
-
-I must admit that I only run across SQL from time to time, and I've not used 'between', and 'group by' is not something that sprang readily to mind. I provided 6 only after considering the video's solution, but include it as I feel it offers something of value (considering the lackluster solution in the video).
-
-All queries tested in sqlite3.﻿
+6*) 5)Return HIGEST SALAried , EMPLOYEE_NAME DEPARTMENT_NAME ....
+_______________________________
+select e.first_name, e.last_name, e.salary, d.department.name as department from employee e 
+inner join 
+department d
+ ON (e.department_id = d.department_id )
+  WHERE 
+salary IN (select Max(salary) from employee);
  
+ 6.1*) 5)Return HIGEST SALAried , EMPLOYEE_NAME DEPARTMENT_NAME ....
+_______________________________
+select e.first_name, e.last_name, e.salary, d.department.name as department from employee e 
+inner join 
+department d
+ ON (e.department_id = d.department_id )
+ WHERE 
+salary IN (select Max(salary) from employee)
+group by department_id;
+ 
+ 7*) 5)Return HIGEST SALAY, EMPLOYEE_NAME DEPARTMENT_NAME ....BASED ON/FOR EACH  DEPARTMENT.....
+select first_name, last_name, salary, department.name as department from employee inner join department
+ on employee.department_id = department.department_id group by department.department_id;
+ 
+ --2ND
+select first_name||" "||last_name as name, max(salary), department.name as department from employee inner join department
+ on employee.department_id = department.department_id group by department.department_id;
+
+/*
+The solutions in the video are problematic on a number of counts. Solutions for 1, 3 and 6 as provided can all return more results 
+than intended, which can cause problems down the line. I would keep looking for an employee who had a better understanding of 
+what they were doing. That 'where-in-select-max' pattern produces answers that are mostly correct, most of the time, 
+but is ultimately wrong.
+
+I must admit that I only run across SQL from time to time, and I've not used 'between', and 'group by' is not something that 
+sprang readily to mind. I provided 6 only after considering the video's solution, but include it as I feel it offers something of 
+value (considering the lackluster solution in the video).
+All queries tested in sqlite3.﻿
 */
+
+
+https://www.youtube.com/watch?v=uAWWhEA57bE
+
+EMPLOYEE
+________________________________________________________________________________________________
+|employee_id |first_name | last_name   |gender     | position    |department_id | salary   |
+|2002        |super      | man         |Male       | Tester      |1             | 75000    |
+|2003        |Jessica    | Liers       |Female     | architect   |1             | 60000    |
+|2004        |Bonnie     | Adams       |Male       |Project Mnger|1             | 80000    |
+|2005        |James      | Madison     |Male       |Soft Devler  |1             | 55000    |
+|2006        |Michael    | Greenback   |Male       | Tester      |2             | 85000    |
+|2007        |Leslie     | Peters      |Female      | Tester     |2             | 76000    |
+|2008        |mars       | POwers     |Male       | Tester      |2              | 59000    |#
+|2008        |mars       | POwers     |Male       | Tester      |2              | 59000    |
+|2008        |Stacy      | Jacobs     |Female       | Sales     |2              | 59000    |
+________________________________________________________________________________________________
+
+
+DEPARTMENT
+________________________________
+|department_id |department_name |
+________________________________
+|1             |IT             |
+|2             |Sales           |
+__________________________________-
