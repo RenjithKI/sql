@@ -1,0 +1,24 @@
+--SELECT all RECORDS from table 
+select * from employee
+
+select * from employee
+
+1) select * from employee order by salary desc limit 1;
+
+2) select max(salary) from employee;
+
+3) select salary from employee order by salary desc limit 1 offset 1;
+
+4) select * from employee where employee_id > 2004 and employee_id <= 2006;
+
+5) select first_name||" "||last_name as name, salary, department.name as department from employee inner join department on employee.department_id = department.department_id;
+
+6*) select first_name||" "||last_name as name, max(salary), department.name as department from employee inner join department on employee.department_id = department.department_id group by department.department_id;
+
+/*The solutions in the video are problematic on a number of counts. Solutions for 1, 3 and 6 as provided can all return more results than intended, which can cause problems down the line. I would keep looking for an employee who had a better understanding of what they were doing. That 'where-in-select-max' pattern produces answers that are mostly correct, most of the time, but is ultimately wrong.
+
+I must admit that I only run across SQL from time to time, and I've not used 'between', and 'group by' is not something that sprang readily to mind. I provided 6 only after considering the video's solution, but include it as I feel it offers something of value (considering the lackluster solution in the video).
+
+All queries tested in sqlite3.﻿
+ 
+*/
